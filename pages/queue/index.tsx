@@ -29,17 +29,21 @@ const SignupPage = () => {
       socketInitializer();
       return () => {
         if (socket) {
-          socket.disconnect();
+          socket.close();
         }
       };
     }
   }, []);
   return (
-    <Container>
+    <Container direction="column">
       <Heading>Queue</Heading>
-      {queue.map((item) => (
-        <div key={item.id}>{item.name}</div>
-      ))}
+      <Container>
+        {queue.length ? (
+          queue.map((item) => <div key={item.id}>{item.name}</div>)
+        ) : (
+          <div>Empty</div>
+        )}
+      </Container>
     </Container>
   );
 };

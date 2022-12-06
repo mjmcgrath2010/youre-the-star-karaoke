@@ -67,8 +67,8 @@ export default function Home() {
             loading={!data}
             getRowId={(row) => row._id}
             pagination
-            onRowClick={({ row }) => {
-              setSong(row);
+            onRowClick={({ row, id }) => {
+              setSong({ ...row, id });
             }}
             columns={columns}
             rows={data || []}

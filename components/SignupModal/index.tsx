@@ -27,32 +27,25 @@ const SignupModal = ({
   const [open, setOpen] = useState(true);
   const [input, setInput] = useState("");
 
-  useEffect(() => {
-    if (!socket) {
-      const socketInitializer = async () => {
-        await fetch("/api/socket");
-        socket = io();
+  const socketInitializer = async () => {
+    await fetch("/api/socket");
+    socket = io();
 
-        socket.on("connect", () => {
-          console.log("connected");
-        });
-      };
-      socketInitializer();
-    }
-    return () => {
-      if (socket) {
-        socket.disconnect();
-      }
-    };
-  }, []);
+    socket.on("connect", () => {
+      console.log("connected");
+    });
+
+    return Promise.resolve();
+  };
 
   const onChangeHandler = (e: any) => {
     setInput(e.target.value);
   };
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
+    await socketInitializer();
+
     socket.emit("new-signup", { name: input, title, artist, diskNumber, id });
-    console.log("submitting");
     setOpen(false);
     onClose(undefined);
   }, [input, title, artist, diskNumber, id, onClose]);
