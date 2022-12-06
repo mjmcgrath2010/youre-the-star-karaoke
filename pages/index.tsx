@@ -1,25 +1,23 @@
 import Head from "next/head";
 import useSWR from "swr";
-
+import { DataGrid } from "@mui/x-data-grid";
+import Box from "@mui/material/Box";
 import DataTable from "react-data-table-component";
 import Container from "../components/Container";
 import Heading from "../components/Heading";
 
 const columns = [
   {
-    name: "Title",
-    selector: (row: any) => row.title,
-    sortable: true,
+    field: "title",
+    headerName: "Title",
   },
   {
-    name: "Artist",
-    selector: (row: any) => row.artist,
-    sortable: true,
+    field: "artist",
+    headerName: "Artist",
   },
   {
-    name: "Disk Number",
-    selector: (row: any) => row.diskNumber,
-    sortable: true,
+    field: "diskNumber",
+    headerName: "Disk Number",
   },
 ];
 
@@ -40,9 +38,14 @@ export default function Home() {
 
       <Container direction="column">
         <Heading>All Songs</Heading>
-        <Container padding={0} direction="column">
-          <DataTable pagination columns={columns} data={data} />
-        </Container>
+        <Box sx={{ height: 700, width: "100%" }}>
+          <DataGrid
+            getRowId={(row) => row._id}
+            pagination
+            columns={columns}
+            rows={data}
+          />
+        </Box>
       </Container>
     </>
   );

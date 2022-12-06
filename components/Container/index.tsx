@@ -13,6 +13,7 @@ const StyledContainer = styled.div<ContainerProps>`
   flex-direction: ${(props) => props.direction || "row"};
   gap: ${(props) => props.gap || 4}px;
   padding: ${(props) => props.padding || 24}px;
+  height: 100%;
 `;
 
 const Container = ({ children, ...props }: ContainerProps) => {

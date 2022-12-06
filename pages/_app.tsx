@@ -25,8 +25,8 @@ a {
     color-scheme: dark;
   }
   body {
-    color: white;
-    background: black;
+    color: #000;
+    background: #FFF;
   }
 }
 

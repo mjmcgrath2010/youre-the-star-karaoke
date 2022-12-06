@@ -38,6 +38,14 @@ export default class MyDocument extends Document {
           <link rel="manifest" href="/manifest.json" />
           <link rel="shortcut icon" href="/favicon.ico" />
           <link rel="apple-touch-icon" href="/logo192.png" />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+          />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          />
         </Head>
         <NextScript />
         <Main />
