@@ -9,8 +9,8 @@ const SocketHandler = (_: any, res: any) => {
     res.socket.server.io = io;
 
     io.on("connection", (socket) => {
-      socket.on("input-change", (msg) => {
-        socket.broadcast.emit("update-input", msg);
+      socket.on("new-signup", (msg) => {
+        socket.broadcast.emit("signup-added", msg);
       });
     });
   }

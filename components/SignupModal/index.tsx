@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import io from "socket.io-client";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -7,6 +8,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
+let socket: any;
 export interface SignupModalProps {
   title?: string;
   artist?: string;
@@ -21,6 +23,29 @@ const SignupModal = ({
   onClose,
 }: SignupModalProps) => {
   const [open, setOpen] = useState(true);
+  const [input, setInput] = useState("");
+
+  useEffect(() => {
+    const socketInitializer = async () => {
+      await fetch("/api/socket");
+      socket = io();
+
+      socket.on("connect", () => {
+        console.log("connected");
+      });
+    };
+    socketInitializer();
+  }, []);
+
+  const onChangeHandler = (e: any) => {
+    setInput(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    setOpen(false);
+    socket.emit("new-signup", { name: input, title, artist, diskNumber });
+    onClose(undefined);
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -42,12 +67,14 @@ const SignupModal = ({
             label="Name"
             type="text"
             fullWidth
+            value={input}
+            onChange={onChangeHandler}
             variant="standard"
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Add to queue</Button>
+          <Button onClick={handleSubmit}>Add to queue</Button>
         </DialogActions>
       </Dialog>
     </div>

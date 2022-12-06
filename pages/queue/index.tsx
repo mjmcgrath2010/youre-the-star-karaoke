@@ -8,7 +8,7 @@ let socket: any;
 export interface SignupPageProps {}
 
 const SignupPage = () => {
-  const [input, setInput] = useState("");
+  const [queue, updateQueue] = useState<any[]>([]);
 
   useEffect(() => {
     const socketInitializer = async () => {
@@ -19,27 +19,20 @@ const SignupPage = () => {
         console.log("connected");
       });
 
-      socket.on("update-input", (msg: string) => {
-        setInput(msg);
+      socket.on("signup-added", (msg: any) => {
+        console.log(msg);
+
+        updateQueue((prevState: any[]) => [...prevState, msg]);
       });
     };
     socketInitializer();
   }, []);
-
-  const onChangeHandler = (e: any) => {
-    setInput(e.target.value);
-    socket.emit("input-change", e.target.value);
-  };
-
   return (
     <Container>
-      <Heading>Sign up</Heading>
-
-      <input
-        placeholder="Type something"
-        value={input}
-        onChange={onChangeHandler}
-      />
+      <Heading>Queue</Heading>
+      {queue.map((item) => (
+        <div key={item.diskNumber}>{item.name}</div>
+      ))}
     </Container>
   );
 };
