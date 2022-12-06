@@ -1,4 +1,5 @@
 import Head from "next/head";
+import useSWR from "swr";
 
 import DataTable from "react-data-table-component";
 import Container from "../components/Container";
@@ -21,6 +22,12 @@ const columns = [
 ];
 
 export default function Home() {
+  const { data, error } = useSWR("/api/albums", () => {
+    return fetch("/api/songs").then((res) => res.json());
+  });
+
+  if (!data) return <div>Loading...</div>;
+
   return (
     <div className={styles.container}>
       <Head>
@@ -30,9 +37,9 @@ export default function Home() {
       </Head>
 
       <Container direction="column">
-        <Heading>Home</Heading>
+        <Heading>All Songs</Heading>
         <Container>
-          <DataTable columns={columns} data={[]} />
+          <DataTable columns={columns} data={data} />
         </Container>
       </Container>
     </div>
