@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import io from "socket.io-client";
+import React, { useState, useEffect, useCallback } from "react";
+import io, { Socket } from "socket.io-client";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -8,11 +8,12 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-let socket: any;
+let socket: Socket;
 export interface SignupModalProps {
   title?: string;
   artist?: string;
   diskNumber?: string;
+  id?: string;
   onClose: (val?: undefined) => void;
 }
 
@@ -20,32 +21,41 @@ const SignupModal = ({
   title,
   artist,
   diskNumber,
+  id,
   onClose,
 }: SignupModalProps) => {
   const [open, setOpen] = useState(true);
   const [input, setInput] = useState("");
 
   useEffect(() => {
-    const socketInitializer = async () => {
-      await fetch("/api/socket");
-      socket = io();
+    if (!socket) {
+      const socketInitializer = async () => {
+        await fetch("/api/socket");
+        socket = io();
 
-      socket.on("connect", () => {
-        console.log("connected");
-      });
+        socket.on("connect", () => {
+          console.log("connected");
+        });
+      };
+      socketInitializer();
+    }
+    return () => {
+      if (socket) {
+        socket.disconnect();
+      }
     };
-    socketInitializer();
   }, []);
 
   const onChangeHandler = (e: any) => {
     setInput(e.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
+    socket.emit("new-signup", { name: input, title, artist, diskNumber, id });
+    console.log("submitting");
     setOpen(false);
-    socket.emit("new-signup", { name: input, title, artist, diskNumber });
     onClose(undefined);
-  };
+  }, [input, title, artist, diskNumber, id, onClose]);
 
   const handleClose = () => {
     setOpen(false);
