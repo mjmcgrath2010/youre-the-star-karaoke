@@ -1,9 +1,11 @@
+import React, { useState } from "react";
 import Head from "next/head";
 import useSWR from "swr";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import Container from "../components/Container";
 import Heading from "../components/Heading";
+import SignupModal from "../components/SignupModal";
 
 function QuickSearchToolbar() {
   return (
@@ -44,6 +46,7 @@ const columns = [
 ];
 
 export default function Home() {
+  const [song, setSong] = useState<Record<string, string> | undefined>();
   const { data, error } = useSWR("/api/songs", () => {
     return fetch("/api/songs").then((res) => res.json());
   });
@@ -58,13 +61,14 @@ export default function Home() {
 
       <Container direction="column">
         <Heading>Garage Karaoke - Song List</Heading>
+        {song && <SignupModal {...song} onClose={setSong} />}
         <Box sx={{ height: "80vh", width: "100%" }}>
           <DataGrid
             loading={!data}
             getRowId={(row) => row._id}
             pagination
             onRowClick={({ row }) => {
-              alert(JSON.stringify(row, null, 2));
+              setSong(row);
             }}
             columns={columns}
             rows={data || []}
