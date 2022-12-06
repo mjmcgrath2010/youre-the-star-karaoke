@@ -1,9 +1,29 @@
 import Head from "next/head";
 import useSWR from "swr";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import Container from "../components/Container";
 import Heading from "../components/Heading";
+
+function QuickSearchToolbar() {
+  return (
+    <Box
+      sx={{
+        p: 1,
+        pb: 0,
+        alignSelf: "flex-end",
+        width: "100%",
+        display: "flex",
+        minWidth: 400,
+      }}
+    >
+      <GridToolbarQuickFilter
+        placeholder="Search by song title or artist..."
+        sx={{ width: "350px" }}
+      />
+    </Box>
+  );
+}
 
 const columns = [
   {
@@ -39,13 +59,14 @@ export default function Home() {
       </Head>
 
       <Container direction="column">
-        <Heading>All Songs</Heading>
+        <Heading>Garage Karaoke - Song List</Heading>
         <Box sx={{ height: "80vh", width: "100%" }}>
           <DataGrid
             getRowId={(row) => row._id}
             pagination
             columns={columns}
             rows={data}
+            components={{ Toolbar: QuickSearchToolbar }}
           />
         </Box>
       </Container>
