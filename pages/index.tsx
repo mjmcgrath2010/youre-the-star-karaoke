@@ -63,6 +63,9 @@ export default function Home() {
             loading={!data}
             getRowId={(row) => row._id}
             pagination
+            onRowClick={({ row }) => {
+              alert(JSON.stringify(row, null, 2));
+            }}
             columns={columns}
             rows={data || []}
             components={{ Toolbar: QuickSearchToolbar }}
