@@ -48,8 +48,6 @@ export default function Home() {
     return fetch("/api/songs").then((res) => res.json());
   });
 
-  if (!data) return <div>Loading...</div>;
-
   return (
     <>
       <Head>
@@ -62,10 +60,11 @@ export default function Home() {
         <Heading>Garage Karaoke - Song List</Heading>
         <Box sx={{ height: "80vh", width: "100%" }}>
           <DataGrid
+            loading={!data}
             getRowId={(row) => row._id}
             pagination
             columns={columns}
-            rows={data}
+            rows={data || []}
             components={{ Toolbar: QuickSearchToolbar }}
           />
         </Box>
