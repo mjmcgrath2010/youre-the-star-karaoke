@@ -38,8 +38,8 @@ export default function Home() {
 
       <Container direction="column">
         <Heading>All Songs</Heading>
-        <Container>
-          <DataTable columns={columns} data={data} />
+        <Container padding={0} direction="column">
+          <DataTable pagination columns={columns} data={data} />
         </Container>
       </Container>
     </div>
