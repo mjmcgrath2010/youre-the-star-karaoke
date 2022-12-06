@@ -1,7 +1,24 @@
 import Head from "next/head";
+
+import DataTable from "react-data-table-component";
 import Container from "../components/Container";
 import Heading from "../components/Heading";
 import styles from "../styles/Home.module.css";
+
+const columns = [
+  {
+    name: "Title",
+    selector: (row: any) => row.title,
+  },
+  {
+    name: "Artist",
+    selector: (row: any) => row.artist,
+  },
+  {
+    name: "Disk Number",
+    selector: (row: any) => row.diskNumber,
+  },
+];
 
 export default function Home() {
   return (
@@ -12,8 +29,11 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Container>
+      <Container direction="column">
         <Heading>Home</Heading>
+        <Container>
+          <DataTable columns={columns} data={[]} />
+        </Container>
       </Container>
     </div>
   );
