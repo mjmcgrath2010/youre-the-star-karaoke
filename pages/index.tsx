@@ -2,22 +2,24 @@ import Head from "next/head";
 import useSWR from "swr";
 import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
-import DataTable from "react-data-table-component";
 import Container from "../components/Container";
 import Heading from "../components/Heading";
 
 const columns = [
   {
     field: "title",
-    headerName: "Title",
+    headerName: "Song Name",
+    minWidth: 400,
   },
   {
     field: "artist",
     headerName: "Artist",
+    minWidth: 400,
   },
   {
     field: "diskNumber",
     headerName: "Disk Number",
+    minWidth: 200,
   },
 ];
 
@@ -38,7 +40,7 @@ export default function Home() {
 
       <Container direction="column">
         <Heading>All Songs</Heading>
-        <Box sx={{ height: 700, width: "100%" }}>
+        <Box sx={{ height: "80vh", width: "100%" }}>
           <DataGrid
             getRowId={(row) => row._id}
             pagination
