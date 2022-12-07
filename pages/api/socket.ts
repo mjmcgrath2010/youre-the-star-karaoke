@@ -11,7 +11,7 @@ const SocketHandler = (_: any, res: any) => {
     io.on("connection", (socket) => {
       console.log("socket connection");
       socket.on("new-signup", (msg) => {
-        socket.broadcast.emit("new-signup", msg);
+        socket.broadcast.emit("signup", msg);
       });
     });
   }
