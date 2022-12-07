@@ -8,7 +8,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-let socket: Socket;
+let socket: Socket | null;
 export interface SignupModalProps {
   title?: string;
   artist?: string;
@@ -45,7 +45,14 @@ const SignupModal = ({
   const handleSubmit = useCallback(async () => {
     await socketInitializer();
 
-    socket.emit("new-signup", { name: input, title, artist, diskNumber, id });
+    if (socket) {
+      socket.emit("new-signup", { name: input, title, artist, diskNumber, id });
+      socket.on("disconnect", () => {
+        socket?.removeAllListeners();
+        socket?.close();
+        socket = null;
+      });
+    }
     setOpen(false);
     onClose(undefined);
   }, [input, title, artist, diskNumber, id, onClose]);

@@ -1,10 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useCallback, useState } from "react";
 import io from "socket.io-client";
-import Container from "../../components/Container";
 import Typography from "@mui/material/Typography";
 import { DataGrid } from "@mui/x-data-grid";
-
-let socket: any;
+import Box from "@mui/material/Box";
 
 export interface SignupPageProps {}
 
@@ -12,73 +10,75 @@ const columns = [
   {
     field: "name",
     headerName: "Name",
-    minWidth: 400,
+    minWidth: 200,
   },
   {
     field: "title",
     headerName: "Song Title",
-    minWidth: 400,
+    minWidth: 200,
   },
   {
     field: "artist",
     headerName: "Artist",
-    minWidth: 400,
+    minWidth: 200,
   },
   {
     field: "diskNumber",
     headerName: "Disk Number",
-    minWidth: 200,
+    minWidth: 100,
   },
 ];
 
 const SignupPage = () => {
   const [queue, updateQueue] = useState<any[]>([]);
 
-  const setupListers = (socket: any) => {
-    socket.on("connect", () => {
-      console.log("connected");
-    });
-
-    socket.on("new-signup", (msg: any) => {
-      const newQueue = [msg].map(
-        ({ title, name, artist, diskNumber, id }: any = {}) => {
-          return {
-            title,
-            name,
-            artist,
-            diskNumber,
-            id,
-          };
-        }
-      );
-      updateQueue(newQueue);
-    });
-  };
+  const setupListers = useCallback(
+    (socket: any) => {
+      socket.on("new-signup", (msg: any) => {
+        updateQueue(
+          [...queue, msg].map(
+            ({ title, name, artist, diskNumber, id }: any = {}) => {
+              return {
+                title,
+                name,
+                artist,
+                diskNumber,
+                id,
+              };
+            }
+          )
+        );
+        socket.off("new-signup");
+      });
+    },
+    [queue]
+  );
 
   useEffect(() => {
-    if (!socket) {
-      const socketInitializer = async () => {
-        await fetch("/api/socket");
-        socket = io();
-        return socket;
-      };
-      socketInitializer().then((socket) => {
-        setupListers(socket);
-      });
-    }
-  }, []);
+    const socketInitializer = async () => {
+      await fetch("/api/socket");
+      const socket = io();
+      return socket;
+    };
+
+    socketInitializer().then((socket) => {
+      setupListers(socket);
+    });
+  }, [setupListers]);
 
   return (
-    <Container direction="column">
+    <Box>
       <Typography variant="h3">Queue</Typography>
-      <Container>
+      <Box>
         {queue.length ? (
-          <DataGrid pagination columns={columns} rows={queue} />
+          <Box sx={{ height: "80vh", width: "100%" }}>
+            <DataGrid pagination columns={columns} rows={queue} />
+          </Box>
         ) : (
           <Typography variant="h6">No data</Typography>
         )}
-      </Container>
-    </Container>
+      </Box>
+    </Box>
   );
 };
 
