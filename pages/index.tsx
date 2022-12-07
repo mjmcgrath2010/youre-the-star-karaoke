@@ -65,7 +65,7 @@ export default function Home() {
           gap: "16px",
         }}
       >
-        <Typography variant="h4">Garage Karaoke - Song List</Typography>
+        <Typography variant="h4">Song List</Typography>
         {song && <SignupModal {...song} onClose={setSong} />}
         <Box
           sx={{
