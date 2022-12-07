@@ -5,6 +5,8 @@ import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import useSongQueue from "../../hooks/useSongQueue";
 import dayjs from "dayjs";
+import { Button } from "@mui/material";
+import MainLayout from "../../layouts/MainLayout";
 
 export interface SignupPageProps {}
 
@@ -27,6 +29,57 @@ function QuickSearchToolbar() {
     </Box>
   );
 }
+
+function GridNoResults() {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100%",
+        width: "100%",
+        flexDirection: "column",
+        gap: "16px",
+      }}
+    >
+      <Typography variant="h4" align="center">
+        Nothing in the queue yet! 💤
+      </Typography>
+      <Typography variant="h6" align="center">
+        Add a song from the song list to get singing! 🎤
+      </Typography>
+    </Box>
+  );
+}
+
+const CompleteButton = ({ id }: any) => {
+  const [socket, setSocket] = useState<Socket | null>(null);
+
+  const socketInitializer = async () => {
+    await fetch("/api/socket");
+    const socket = io();
+    return socket;
+  };
+
+  useEffect(() => {
+    if (!socket) {
+      socketInitializer().then((socket) => {
+        setSocket(socket);
+      });
+    }
+  }, [socket]);
+
+  const handleComplete = () => {
+    socket?.emit("song-complete", id);
+  };
+
+  return (
+    <Button color="primary" variant="outlined" onClick={handleComplete}>
+      Done
+    </Button>
+  );
+};
 
 const columns = [
   {
@@ -53,6 +106,16 @@ const columns = [
     field: "createdAt",
     headerName: "Submitted At",
     minWidth: 200,
+  },
+
+  {
+    field: "setCompleted",
+    headerName: "",
+    sortable: false,
+    minWidth: 200,
+    renderCell: (params: any) => {
+      return <CompleteButton id={params.id} />;
+    },
   },
 ];
 
@@ -105,24 +168,31 @@ const SignupPage = () => {
   };
 
   return (
-    <Box>
-      <Typography variant="h3">Queue</Typography>
-      <Box>
-        {rows.length ? (
-          <Box sx={{ height: "80vh", width: "100%" }}>
-            <DataGrid
-              components={{ Toolbar: QuickSearchToolbar }}
-              pagination
-              columns={columns}
-              onRowClick={handleRowClick}
-              rows={rows}
-            />
-          </Box>
-        ) : (
-          <Typography variant="h6">No data</Typography>
-        )}
+    <MainLayout>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          height: "100vh",
+          gap: "16px",
+        }}
+      >
+        <Typography variant="h4">Queue</Typography>
+        <Box sx={{ height: "80vh", width: "100%" }}>
+          <DataGrid
+            components={{
+              Toolbar: QuickSearchToolbar,
+              NoRowsOverlay: GridNoResults,
+            }}
+            pagination
+            columns={columns}
+            onRowClick={handleRowClick}
+            rows={rows}
+          />
+        </Box>
       </Box>
-    </Box>
+    </MainLayout>
   );
 };
 
