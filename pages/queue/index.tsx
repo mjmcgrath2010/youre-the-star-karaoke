@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
 import Container from "../../components/Container";
-import Heading from "../../components/Heading";
+import Typography from "@mui/material/Typography";
 
 let socket: any;
 
@@ -15,18 +15,16 @@ const SignupPage = () => {
       const socketInitializer = async () => {
         await fetch("/api/socket");
         socket = io();
-
+      };
+      socketInitializer().then(() => {
         socket.on("connect", () => {
           console.log("connected");
         });
 
-        socket.on("signup-added", (msg: any) => {
-          console.log(msg);
-
+        socket.on("new-signup", (msg: any) => {
           updateQueue((prevState: any[]) => [...prevState, msg]);
         });
-      };
-      socketInitializer();
+      });
       return () => {
         if (socket) {
           socket.close();
@@ -36,12 +34,12 @@ const SignupPage = () => {
   }, []);
   return (
     <Container direction="column">
-      <Heading>Queue</Heading>
+      <Typography variant="h3">Queue</Typography>
       <Container>
         {queue.length ? (
           queue.map((item) => <div key={item.id}>{item.name}</div>)
         ) : (
-          <div>Empty</div>
+          <Typography variant="subtitle1">Empty</Typography>
         )}
       </Container>
     </Container>

@@ -3,8 +3,8 @@ import Head from "next/head";
 import useSWR from "swr";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import Container from "../components/Container";
-import Heading from "../components/Heading";
 import SignupModal from "../components/SignupModal";
 
 function QuickSearchToolbar() {
@@ -60,7 +60,7 @@ export default function Home() {
       </Head>
 
       <Container direction="column">
-        <Heading>Garage Karaoke - Song List</Heading>
+        <Typography variant="h3">Garage Karaoke - Song List</Typography>
         {song && <SignupModal {...song} onClose={setSong} />}
         <Box sx={{ height: "80vh", width: "100%" }}>
           <DataGrid
