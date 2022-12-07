@@ -1,5 +1,5 @@
 import { Server } from "socket.io";
-
+import redis from "../../lib/redis";
 const SocketHandler = (_: any, res: any) => {
   if (res.socket.server.io) {
     console.log("Socket is already running");
@@ -10,7 +10,8 @@ const SocketHandler = (_: any, res: any) => {
 
     io.on("connection", (socket) => {
       console.log("socket connection");
-      socket.on("new-signup", (msg) => {
+      socket.on("new-signup", async (msg) => {
+        await redis.hset("signup", msg.id, JSON.stringify(msg));
         socket.broadcast.emit("signup", msg);
       });
     });

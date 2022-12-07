@@ -5,7 +5,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const value = await redis.hget("feedback", "1");
-
-  return res.json(value);
+  try {
+    const value = await redis.hvals("signup");
+    const response = JSON.stringify(value.map((val) => JSON.parse(val)));
+    return res.json(JSON.parse(response));
+  } catch (e) {
+    return res.json([]);
+  }
 }
