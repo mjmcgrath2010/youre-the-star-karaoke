@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import useSongQueue from "../../hooks/useSongQueue";
+import dayjs from "dayjs";
 
 export interface SignupPageProps {}
 
@@ -46,7 +47,12 @@ const columns = [
   {
     field: "diskNumber",
     headerName: "Disk Number",
-    minWidth: 100,
+    minWidth: 200,
+  },
+  {
+    field: "createdAt",
+    headerName: "Submitted At",
+    minWidth: 200,
   },
 ];
 
@@ -61,13 +67,14 @@ const SignupPage = () => {
       socket.on("new-signup", (msg: any) => {
         updateQueue(
           [...queue, msg].map(
-            ({ title, name, artist, diskNumber, id }: any = {}) => {
+            ({ title, name, artist, diskNumber, id, createdAt }: any = {}) => {
               return {
                 title,
                 name,
                 artist,
                 diskNumber,
                 id,
+                createdAt: dayjs(createdAt).format("YYYY-MM-DD HH:mm:ss"),
               };
             }
           )

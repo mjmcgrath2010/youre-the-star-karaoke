@@ -7,6 +7,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import dayjs from "dayjs";
 
 let socket: Socket | null;
 export interface SignupModalProps {
@@ -46,7 +47,14 @@ const SignupModal = ({
     await socketInitializer();
 
     if (socket) {
-      socket.emit("new-signup", { name: input, title, artist, diskNumber, id });
+      socket.emit("new-signup", {
+        name: input,
+        title,
+        artist,
+        diskNumber,
+        id,
+        createdAt: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+      });
       socket.on("disconnect", () => {
         socket?.removeAllListeners();
         socket?.close();

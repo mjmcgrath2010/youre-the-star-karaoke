@@ -9,7 +9,6 @@ const SocketHandler = (_: any, res: any) => {
     res.socket.server.io = io;
 
     io.on("connection", (socket) => {
-      console.log("socket connection");
       socket.on("new-signup", async (msg) => {
         await redis.hset("signup", msg.id, JSON.stringify(msg));
         socket.broadcast.emit("signup", msg);
