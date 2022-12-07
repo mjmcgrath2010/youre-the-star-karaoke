@@ -1,28 +1,25 @@
 import React, { useState } from "react";
 import Head from "next/head";
 import useSWR from "swr";
-import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridToolbarQuickFilter,
+  GridToolbarFilterButton,
+  GridToolbarContainer,
+} from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import SignupModal from "../components/SignupModal";
 
 function QuickSearchToolbar() {
   return (
-    <Box
-      sx={{
-        p: 1,
-        pb: 0,
-        alignSelf: "flex-end",
-        width: "100%",
-        display: "flex",
-        minWidth: 400,
-      }}
-    >
+    <GridToolbarContainer>
       <GridToolbarQuickFilter
         placeholder="Search by song title or artist..."
         sx={{ width: "350px" }}
       />
-    </Box>
+      <GridToolbarFilterButton />
+    </GridToolbarContainer>
   );
 }
 
