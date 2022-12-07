@@ -73,14 +73,14 @@ const SignupModal = ({
   return (
     <div>
       <Dialog maxWidth="xl" open={open} onClose={handleClose}>
-        <DialogTitle>Add song to queue</DialogTitle>
+        <DialogTitle>Add new song to the queue</DialogTitle>
         <DialogContent
           sx={{
             minWidth: "40vw",
           }}
         >
           <DialogContentText>
-            Signup for {title} by {artist}
+            Add {title} by {artist}
           </DialogContentText>
           <TextField
             autoFocus
