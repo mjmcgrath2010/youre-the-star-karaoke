@@ -3,6 +3,7 @@ import io from "socket.io-client";
 import Typography from "@mui/material/Typography";
 import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
+import useSongQueue from "../../hooks/useSongQueue";
 
 export interface SignupPageProps {}
 
@@ -31,6 +32,8 @@ const columns = [
 
 const SignupPage = () => {
   const [queue, updateQueue] = useState<any[]>([]);
+
+  const { data, error } = useSongQueue();
 
   const setupListers = useCallback(
     (socket: any) => {
@@ -66,13 +69,15 @@ const SignupPage = () => {
     });
   }, [setupListers]);
 
+  const rows = [...data, ...queue];
+
   return (
     <Box>
       <Typography variant="h3">Queue</Typography>
       <Box>
-        {queue.length ? (
+        {rows.length ? (
           <Box sx={{ height: "80vh", width: "100%" }}>
-            <DataGrid pagination columns={columns} rows={queue} />
+            <DataGrid pagination columns={columns} rows={rows} />
           </Box>
         ) : (
           <Typography variant="h6">No data</Typography>
