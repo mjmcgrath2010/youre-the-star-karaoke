@@ -1,11 +1,31 @@
 import { useEffect, useCallback, useState } from "react";
 import io from "socket.io-client";
 import Typography from "@mui/material/Typography";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import useSongQueue from "../../hooks/useSongQueue";
 
 export interface SignupPageProps {}
+
+function QuickSearchToolbar() {
+  return (
+    <Box
+      sx={{
+        p: 1,
+        pb: 0,
+        alignSelf: "flex-end",
+        width: "100%",
+        display: "flex",
+        minWidth: 400,
+      }}
+    >
+      <GridToolbarQuickFilter
+        placeholder="Search by an up coming participant..."
+        sx={{ width: "350px" }}
+      />
+    </Box>
+  );
+}
 
 const columns = [
   {
@@ -77,7 +97,12 @@ const SignupPage = () => {
       <Box>
         {rows.length ? (
           <Box sx={{ height: "80vh", width: "100%" }}>
-            <DataGrid pagination columns={columns} rows={rows} />
+            <DataGrid
+              components={{ Toolbar: QuickSearchToolbar }}
+              pagination
+              columns={columns}
+              rows={rows}
+            />
           </Box>
         ) : (
           <Typography variant="h6">No data</Typography>
