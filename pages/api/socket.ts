@@ -16,8 +16,7 @@ const SocketHandler = (_: any, res: any) => {
       });
 
       socket.on("song-complete", async (msg) => {
-        await redis.hdel("signup", msg.id);
-        socket.broadcast.emit("song-complete", msg);
+        await redis.hdel("signup", msg);
       });
     });
   }

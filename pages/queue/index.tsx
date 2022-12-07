@@ -1,5 +1,5 @@
 import { useEffect, useCallback, useState } from "react";
-import io from "socket.io-client";
+import io, { Socket } from "socket.io-client";
 import Typography from "@mui/material/Typography";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
@@ -52,6 +52,7 @@ const columns = [
 
 const SignupPage = () => {
   const [queue, updateQueue] = useState<any[]>([]);
+  const [socket, setSocket] = useState<Socket | null>(null);
 
   const { data, error } = useSongQueue();
 
@@ -85,11 +86,16 @@ const SignupPage = () => {
     };
 
     socketInitializer().then((socket) => {
+      setSocket(socket);
       setupListers(socket);
     });
   }, [setupListers]);
 
-  const rows = [...data, ...queue];
+  const rows = [...(data || []), ...queue];
+
+  const handleRowClick = ({ id }: any) => {
+    socket?.emit("song-complete", id);
+  };
 
   return (
     <Box>
@@ -101,6 +107,7 @@ const SignupPage = () => {
               components={{ Toolbar: QuickSearchToolbar }}
               pagination
               columns={columns}
+              onRowClick={handleRowClick}
               rows={rows}
             />
           </Box>
