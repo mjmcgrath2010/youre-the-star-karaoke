@@ -10,6 +10,7 @@ const SocketHandler = (_: any, res: any) => {
         origin: "*",
         methods: ["GET", "POST"],
       },
+      path: "/socket.io/",
     });
     res.socket.server.io = io;
 
