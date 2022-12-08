@@ -27,4 +27,10 @@ const SocketHandler = (_: any, res: any) => {
   res.end();
 };
 
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
 export default SocketHandler;
