@@ -6,7 +6,9 @@ const useSocket = () => {
   useEffect(() => {
     const socketInitializer = async () => {
       await fetch("/api/socket");
-      const socket = io(window.location.origin, { transports: ["websocket"] });
+      const socket = io(window.location.origin, {
+        path: "/socket.io",
+      });
       socket.on("connect", () => {
         console.log("connected");
       });
