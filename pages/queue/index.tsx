@@ -7,6 +7,7 @@ import useSongQueue from "../../hooks/useSongQueue";
 import dayjs from "dayjs";
 import { Button } from "@mui/material";
 import MainLayout from "../../layouts/MainLayout";
+import useSocket from "../../hooks/useSocket";
 
 export interface SignupPageProps {}
 
@@ -121,12 +122,12 @@ const columns = [
 
 const SignupPage = () => {
   const [queue, updateQueue] = useState<any[]>([]);
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const socket = useSocket();
 
   const { data, error } = useSongQueue();
 
   const setupListers = useCallback(
-    (socket: any) => {
+    (socket: Socket) => {
       socket.on("new-signup", (msg: any) => {
         updateQueue(
           [...queue, msg].map(
@@ -142,24 +143,16 @@ const SignupPage = () => {
             }
           )
         );
-        socket.off("new-signup");
       });
     },
     [queue]
   );
 
   useEffect(() => {
-    const socketInitializer = async () => {
-      await fetch("/api/socket");
-      const socket = io();
-      return socket;
-    };
-
-    socketInitializer().then((socket) => {
-      setSocket(socket);
+    if (socket) {
       setupListers(socket);
-    });
-  }, [setupListers]);
+    }
+  }, [setupListers, socket]);
 
   const rows = [...(data || []), ...queue];
 

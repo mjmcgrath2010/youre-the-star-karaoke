@@ -8,6 +8,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import dayjs from "dayjs";
+import useSocket from "../../hooks/useSocket";
 
 let socket: Socket | null;
 export interface SignupModalProps {
@@ -27,25 +28,13 @@ const SignupModal = ({
 }: SignupModalProps) => {
   const [open, setOpen] = useState(true);
   const [input, setInput] = useState("");
-
-  const socketInitializer = async () => {
-    await fetch("/api/socket");
-    socket = io();
-
-    socket.on("connect", () => {
-      console.log("connected");
-    });
-
-    return Promise.resolve();
-  };
+  const socket = useSocket();
 
   const onChangeHandler = (e: any) => {
     setInput(e.target.value);
   };
 
   const handleSubmit = useCallback(async () => {
-    await socketInitializer();
-
     if (socket) {
       socket.emit("new-signup", {
         name: input,
@@ -55,15 +44,10 @@ const SignupModal = ({
         id,
         createdAt: dayjs().format("YYYY-MM-DD HH:mm:ss"),
       });
-      socket.on("disconnect", () => {
-        socket?.removeAllListeners();
-        socket?.close();
-        socket = null;
-      });
     }
     setOpen(false);
     onClose(undefined);
-  }, [input, title, artist, diskNumber, id, onClose]);
+  }, [input, title, artist, diskNumber, id, onClose, socket]);
 
   const handleClose = () => {
     setOpen(false);
