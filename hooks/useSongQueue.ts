@@ -1,7 +1,7 @@
 import useSWR from "swr";
 
 const useSongQueue = () => {
-  const { data, error } = useSWR(
+  const { data, error, mutate } = useSWR(
     "allSongs",
     async () => {
       const res = await fetch("/api/queue/all");
@@ -15,6 +15,7 @@ const useSongQueue = () => {
   return {
     data,
     error,
+    refresh: mutate,
   };
 };
 

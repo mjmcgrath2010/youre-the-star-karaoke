@@ -45,8 +45,9 @@ const SignupModal = ({
         createdAt: dayjs().format("YYYY-MM-DD HH:mm:ss"),
       });
     }
-    setOpen(false);
+
     onClose(undefined);
+    setOpen(false);
   }, [input, title, artist, diskNumber, id, onClose, socket]);
 
   const handleClose = () => {

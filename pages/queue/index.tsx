@@ -124,7 +124,7 @@ const SignupPage = () => {
   const [queue, updateQueue] = useState<any[]>([]);
   const socket = useSocket();
 
-  const { data, error } = useSongQueue();
+  const { data, refresh } = useSongQueue();
 
   const setupListers = useCallback(
     (socket: Socket) => {
@@ -158,6 +158,7 @@ const SignupPage = () => {
 
   const handleRowClick = ({ id }: any) => {
     socket?.emit("song-complete", id);
+    refresh();
   };
 
   return (
