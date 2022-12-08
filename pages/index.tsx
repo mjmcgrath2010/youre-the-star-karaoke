@@ -11,6 +11,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import SignupModal from "../components/SignupModal";
 import MainLayout from "../layouts/MainLayout";
+import { Button } from "@mui/material";
 
 function QuickSearchToolbar() {
   return (
@@ -24,29 +25,45 @@ function QuickSearchToolbar() {
   );
 }
 
-const columns = [
-  {
-    field: "title",
-    headerName: "Song Name",
-    minWidth: 400,
-  },
-  {
-    field: "artist",
-    headerName: "Artist",
-    minWidth: 400,
-  },
-  {
-    field: "diskNumber",
-    headerName: "Disk Number",
-    minWidth: 200,
-  },
-];
-
 export default function Home() {
   const [song, setSong] = useState<Record<string, string> | undefined>();
   const { data } = useSWR("/api/songs", () => {
     return fetch("/api/songs").then((res) => res.json());
   });
+
+  const columns = [
+    {
+      field: "title",
+      headerName: "Song Name",
+      minWidth: 400,
+    },
+    {
+      field: "artist",
+      headerName: "Artist",
+      minWidth: 400,
+    },
+    {
+      field: "diskNumber",
+      headerName: "Disk Number",
+      minWidth: 200,
+    },
+    {
+      field: "Add to Queue",
+      headerName: "",
+      sortable: false,
+      minWidth: 200,
+      renderCell: ({ row }: any) => {
+        const handleClick = () => {
+          setSong(row);
+        };
+        return (
+          <Button color="primary" variant="outlined" onClick={handleClick}>
+            Add to Queue
+          </Button>
+        );
+      },
+    },
+  ];
 
   return (
     <MainLayout>
