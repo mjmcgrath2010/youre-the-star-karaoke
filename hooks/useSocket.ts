@@ -12,8 +12,6 @@ const useSocket = () => {
       });
 
       socket.on("disconnect", () => {
-        socket?.removeAllListeners();
-        socket?.close();
         setSocket(null);
       });
       setSocket(socket);
