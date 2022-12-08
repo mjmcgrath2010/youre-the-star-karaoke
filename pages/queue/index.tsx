@@ -86,34 +86,34 @@ const columns = [
   {
     field: "name",
     headerName: "Name",
-    minWidth: 200,
+    flex: 1,
   },
   {
     field: "title",
     headerName: "Song Title",
-    minWidth: 200,
+    flex: 1,
   },
   {
     field: "artist",
     headerName: "Artist",
-    minWidth: 200,
+    flex: 1,
   },
   {
     field: "diskNumber",
     headerName: "Disk Number",
-    minWidth: 200,
+    flex: 1,
   },
   {
     field: "createdAt",
     headerName: "Submitted At",
-    minWidth: 200,
+    flex: 1,
   },
 
   {
     field: "setCompleted",
     headerName: "",
     sortable: false,
-    minWidth: 200,
+    flex: 1,
     renderCell: (params: any) => {
       return <CompleteButton id={params.id} />;
     },

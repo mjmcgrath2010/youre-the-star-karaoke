@@ -35,23 +35,22 @@ export default function Home() {
     {
       field: "title",
       headerName: "Song Name",
-      minWidth: 400,
+      flex: 1,
     },
     {
       field: "artist",
       headerName: "Artist",
-      minWidth: 400,
+      flex: 1,
     },
     {
       field: "diskNumber",
       headerName: "Disk Number",
-      minWidth: 200,
+      flex: 1,
     },
     {
       field: "Add to Queue",
       headerName: "",
       sortable: false,
-      minWidth: 200,
       renderCell: ({ row }: any) => {
         const handleClick = () => {
           setSong(row);
@@ -62,6 +61,7 @@ export default function Home() {
           </Button>
         );
       },
+      flex: 0.5,
     },
   ];
 
@@ -88,19 +88,24 @@ export default function Home() {
           sx={{
             height: "80vh",
             width: "100%",
+            flexDirection: "column",
           }}
         >
-          <DataGrid
-            loading={!data}
-            getRowId={(row) => row._id}
-            pagination
-            onRowClick={({ row, id }) => {
-              setSong({ ...row, id });
-            }}
-            columns={columns}
-            rows={data || []}
-            components={{ Toolbar: QuickSearchToolbar }}
-          />
+          <div style={{ height: "100%", display: "flex", width: "100%" }}>
+            <div style={{ flexGrow: 1 }}>
+              <DataGrid
+                loading={!data}
+                getRowId={(row) => row._id}
+                pagination
+                onRowClick={({ row, id }) => {
+                  setSong({ ...row, id });
+                }}
+                columns={columns}
+                rows={data || []}
+                components={{ Toolbar: QuickSearchToolbar }}
+              />
+            </div>
+          </div>
         </Box>
       </Box>
     </MainLayout>
