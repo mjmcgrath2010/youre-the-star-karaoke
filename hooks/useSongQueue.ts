@@ -8,7 +8,7 @@ const useSongQueue = () => {
       return await res.json();
     },
     {
-      refreshInterval: 1000 * 20 * 30,
+      refreshInterval: 2000,
     }
   );
 

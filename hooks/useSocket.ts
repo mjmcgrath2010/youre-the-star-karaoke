@@ -7,20 +7,25 @@ const useSocket = () => {
     const socketInitializer = async () => {
       await fetch("/api/socket");
       const socket = io();
-      setSocket(socket);
-
       socket.on("connect", () => {
         console.log("connected");
       });
-
-      socket.on("disconnect", () => {
-        socket?.removeAllListeners();
-        socket?.close();
-        setSocket(null);
-      });
+      setSocket(socket);
     };
-    socketInitializer();
-  }, []);
+    if (!socket) {
+      socketInitializer();
+    }
+
+    return () => {
+      if (socket) {
+        socket.on("disconnect", () => {
+          socket?.removeAllListeners();
+          socket?.close();
+          setSocket(null);
+        });
+      }
+    };
+  }, [socket]);
 
   return socket;
 };
