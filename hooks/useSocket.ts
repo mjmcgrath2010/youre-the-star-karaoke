@@ -10,6 +10,12 @@ const useSocket = () => {
       socket.on("connect", () => {
         console.log("connected");
       });
+
+      socket.on("disconnect", () => {
+        socket?.removeAllListeners();
+        socket?.close();
+        setSocket(null);
+      });
       setSocket(socket);
     };
     if (!socket) {
@@ -18,11 +24,7 @@ const useSocket = () => {
 
     return () => {
       if (socket) {
-        socket.on("disconnect", () => {
-          socket?.removeAllListeners();
-          socket?.close();
-          setSocket(null);
-        });
+        socket.disconnect();
       }
     };
   }, [socket]);
