@@ -10,7 +10,14 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   return (
     <Box>
       <TopNav />
-      <Container maxWidth="xl">{children}</Container>
+      <Container
+        maxWidth="xl"
+        sx={{
+          paddingTop: "16px",
+        }}
+      >
+        {children}
+      </Container>
     </Box>
   );
 };
