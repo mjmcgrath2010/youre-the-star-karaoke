@@ -36,7 +36,7 @@ const { actions, reducer: songsReducer } = songsSlice;
 
 export const { setSongs } = actions;
 
-export const { selectById } = songsSelectors;
+export const { selectById, selectIds, selectEntities } = songsSelectors;
 
 export const selectSongsLoaded = (state: RootState) => state.songs.loaded;
 export const selectSongs = (state: RootState) =>

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Head from "next/head";
-import useSWR from "swr";
 import {
   DataGrid,
   GridToolbarQuickFilter,
@@ -12,7 +11,7 @@ import Typography from "@mui/material/Typography";
 import SignupModal from "../components/SignupModal";
 import MainLayout from "../layouts/MainLayout";
 import { Button } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
+import { useAppSelector } from "../hooks/useRedux";
 import { selectSongs, selectSongsLoaded } from "../features/songs/songsSlice";
 import useRecentSongs from "../hooks/useRecentSongs";
 
@@ -33,7 +32,9 @@ export default function Home() {
   const { recentSongs } = useRecentSongs();
   const songs = useAppSelector(selectSongs);
   const songsLoaded = useAppSelector(selectSongsLoaded);
+
   console.table(recentSongs);
+
   const columns = [
     {
       field: "title",
