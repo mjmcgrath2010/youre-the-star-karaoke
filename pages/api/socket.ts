@@ -21,11 +21,19 @@ const SocketHandler = (_: any, res: any) => {
           `${msg.userId}-${msg.id}`,
           JSON.stringify(msg)
         );
+        await redis.hincrby(msg.userId, msg.id, 1);
         socket.broadcast.emit("signup", msg);
       });
 
       socket.on("song-complete", async (msg) => {
-        await redis.hdel("signup", msg);
+        console.log(msg);
+        await redis.hdel("signup", `${msg.userId}-${msg.id}`);
+      });
+
+      socket.on("get-recent", async (msg) => {
+        const recentSongIdPlayCounts = await redis.hgetall(msg);
+
+        socket.broadcast.emit("recent", recentSongIdPlayCounts);
       });
 
       socket.on("disconnect", () => {

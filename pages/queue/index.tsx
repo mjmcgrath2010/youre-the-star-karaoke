@@ -56,7 +56,7 @@ function GridNoResults() {
   );
 }
 
-const CompleteButton = () => {
+const CompleteButton = ({ song }: any) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const userId = useAppSelector(selectUserId);
 
@@ -75,7 +75,7 @@ const CompleteButton = () => {
   }, [socket]);
 
   const handleComplete = () => {
-    socket?.emit("song-complete", userId);
+    socket?.emit("song-complete", { userId, ...song });
   };
 
   return (
@@ -117,8 +117,8 @@ const columns = [
     headerName: "",
     sortable: false,
     flex: 1,
-    renderCell: () => {
-      return <CompleteButton />;
+    renderCell: ({ row }: any) => {
+      return <CompleteButton song={row} />;
     },
   },
 ];
