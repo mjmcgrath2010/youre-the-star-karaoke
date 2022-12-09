@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 import type { RootState } from "../../store";
 
 interface Song {
@@ -8,26 +8,25 @@ interface Song {
   diskNumber: string;
 }
 
-interface SongsState {
-  items: Song[];
-  loaded: boolean;
-}
+const songsAdapter = createEntityAdapter<Song>({
+  // Assume IDs are stored in a field other than `book.id`
+  selectId: (song) => song._id,
+});
 
-const initialState: SongsState = {
-  items: [],
-  loaded: false,
-};
+const songsSelectors = songsAdapter.getSelectors<RootState>(
+  ({ songs }) => songs.items
+);
 
 export const songsSlice = createSlice({
   name: "user",
-  initialState,
+  initialState: { items: songsAdapter.getInitialState(), loaded: false },
   reducers: {
     setSongs: (state, { payload }) => {
-      return {
-        ...state,
-        items: payload,
-        loaded: true,
-      };
+      if (state.loaded) {
+        return;
+      }
+      songsAdapter.setAll(state.items, payload);
+      state.loaded = true;
     },
   },
 });
@@ -37,6 +36,7 @@ const { actions, reducer: songsReducer } = songsSlice;
 export const { setSongs } = actions;
 
 export const selectSongsLoaded = (state: RootState) => state.songs.loaded;
-export const selectSongs = (state: RootState) => state.songs.items;
+export const selectSongs = (state: RootState) =>
+  songsSelectors.selectAll(state);
 
 export default songsReducer;
