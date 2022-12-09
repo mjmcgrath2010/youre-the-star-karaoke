@@ -22,6 +22,7 @@ const SocketHandler = (_: any, res: any) => {
           JSON.stringify(msg)
         );
         await redis.hincrby(msg.userId, msg.id, 1);
+        await redis.hincrby("top-songs", msg.id, 1);
         socket.broadcast.emit("signup", msg);
       });
 
