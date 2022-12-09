@@ -29,11 +29,6 @@ const SocketHandler = (_: any, res: any) => {
         await redis.hdel("signup", `${msg.userId}-${msg.id}`);
       });
 
-      socket.on("get-recent", async (msg) => {
-        const recentSongIdPlayCounts = await redis.hgetall(msg);
-        socket.broadcast.emit("recent", recentSongIdPlayCounts);
-      });
-
       socket.on("disconnect", () => {
         console.log("user disconnected");
       });
