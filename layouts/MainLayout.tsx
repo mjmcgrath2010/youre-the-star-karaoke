@@ -1,4 +1,5 @@
 import { Container, Box } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import React, { useEffect } from "react";
 import useSWR from "swr";
 import TopNav from "../components/TopNav";
@@ -10,6 +11,14 @@ import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
 export interface MainLayoutProps {
   children: React.ReactNode;
 }
+
+const useStyles = makeStyles({
+  root: {
+    "& .MuiDataGrid-cell:focus-within, & .MuiDataGrid-cell:focus": {
+      outline: "none",
+    },
+  },
+});
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   const dispatch = useAppDispatch();
@@ -39,10 +48,12 @@ const MainLayout = ({ children }: MainLayoutProps) => {
       dispatch(setUserId(userId));
     }
   }, [userId, dispatch]);
+  const { root } = useStyles();
   return (
     <Box>
       <TopNav />
       <Container
+        className={root}
         maxWidth="xl"
         sx={{
           paddingTop: "16px",

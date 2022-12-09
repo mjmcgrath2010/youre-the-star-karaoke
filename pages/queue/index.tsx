@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import useSongQueue from "../../hooks/useSongQueue";
 import dayjs from "dayjs";
 import { Button } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import MainLayout from "../../layouts/MainLayout";
 import useSocket from "../../hooks/useSocket";
 import { useAppSelector } from "../../hooks/useRedux";
@@ -120,12 +121,23 @@ const columns = [
     renderCell: ({ row }: any) => {
       return <CompleteButton song={row} />;
     },
+    minWidth: 150,
   },
 ];
+
+const useStyles = makeStyles({
+  root: {
+    "& .MuiDataGrid-cell:focus-within, & .MuiDataGrid-cell:focus,  .MuiDataGrid-columnHeader:focus":
+      {
+        outline: "none",
+      },
+  },
+});
 
 const SignupPage = () => {
   const [queue, updateQueue] = useState<any[]>([]);
   const socket = useSocket();
+  const classes = useStyles();
 
   const { data, refresh } = useSongQueue();
 
@@ -178,6 +190,7 @@ const SignupPage = () => {
         <Typography variant="h4">Queue</Typography>
         <Box sx={{ height: "80vh", width: "100%" }}>
           <DataGrid
+            className={classes.root}
             components={{
               Toolbar: QuickSearchToolbar,
               NoRowsOverlay: GridNoResults,

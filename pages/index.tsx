@@ -11,9 +11,22 @@ import Typography from "@mui/material/Typography";
 import SignupModal from "../components/SignupModal";
 import MainLayout from "../layouts/MainLayout";
 import { Button } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { useAppSelector } from "../hooks/useRedux";
 import { selectSongs, selectSongsLoaded } from "../features/songs/songsSlice";
 import useRecentSongs from "../hooks/useRecentSongs";
+
+const useStyles = makeStyles({
+  root: {
+    "& .MuiDataGrid-cell:focus-within, & .MuiDataGrid-cell:focus, .MuiDataGrid-columnHeader:focus":
+      {
+        outline: "none",
+      },
+    "& .MuiDataGrid-cell:hover": {
+      cursor: "pointer",
+    },
+  },
+});
 
 function QuickSearchToolbar() {
   return (
@@ -28,6 +41,7 @@ function QuickSearchToolbar() {
 }
 
 export default function Home() {
+  const classes = useStyles();
   const [song, setSong] = useState<Record<string, string> | undefined>();
   const { recentSongs } = useRecentSongs();
   const songs = useAppSelector(selectSongs);
@@ -66,6 +80,7 @@ export default function Home() {
         );
       },
       flex: 0.5,
+      minWidth: 150,
     },
   ];
 
@@ -97,6 +112,7 @@ export default function Home() {
           }}
         >
           <DataGrid
+            className={classes.root}
             loading={!songsLoaded}
             getRowId={(row) => row._id}
             pagination
