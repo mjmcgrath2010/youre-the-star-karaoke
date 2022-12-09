@@ -98,21 +98,24 @@ const columns = [
     field: "title",
     headerName: "Song Title",
     flex: 1,
+    hide: global.innerWidth < 600,
   },
   {
     field: "artist",
     headerName: "Artist",
     flex: 1,
+    hide: global.innerWidth < 600,
   },
   {
     field: "diskNumber",
-    headerName: "Disk Number",
-    flex: 1,
+    headerName: "Disk / Song",
+    flex: 0.5,
   },
   {
     field: "createdAt",
     headerName: "Submitted At",
     flex: 1,
+    hide: global.innerWidth < 600,
   },
 
   {

@@ -66,7 +66,6 @@ export default function Home() {
       field: "diskNumber",
       headerName: "Disk Number",
       flex: 0.5,
-      minWidth: 40,
       hide: global.innerWidth < 600,
     },
     {
