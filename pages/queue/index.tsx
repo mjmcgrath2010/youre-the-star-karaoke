@@ -123,7 +123,7 @@ const columns = [
     renderCell: ({ row }: any) => {
       return <CompleteButton song={row} />;
     },
-    minWidth: 150,
+    maxWidth: 60,
   },
 ];
 
