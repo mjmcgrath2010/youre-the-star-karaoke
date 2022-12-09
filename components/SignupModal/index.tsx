@@ -51,7 +51,7 @@ const SignupModal = ({
 
     onClose(undefined);
     setOpen(false);
-  }, [input, title, artist, diskNumber, id, onClose, socket]);
+  }, [input, title, artist, diskNumber, id, onClose, socket, userId]);
 
   const handleClose = () => {
     setOpen(false);
