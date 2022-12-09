@@ -26,13 +26,11 @@ const SocketHandler = (_: any, res: any) => {
       });
 
       socket.on("song-complete", async (msg) => {
-        console.log(msg);
         await redis.hdel("signup", `${msg.userId}-${msg.id}`);
       });
 
       socket.on("get-recent", async (msg) => {
         const recentSongIdPlayCounts = await redis.hgetall(msg);
-
         socket.broadcast.emit("recent", recentSongIdPlayCounts);
       });
 

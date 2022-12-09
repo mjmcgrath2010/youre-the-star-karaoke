@@ -30,7 +30,9 @@ const useSocket = () => {
     dispatch(setSocket(socket));
   }, [dispatch]);
 
-  useSWR(loaded ? null : "GK_WS", socketInitializer);
+  useSWR(loaded ? null : "GK_WS", socketInitializer, {
+    revalidateOnFocus: false,
+  });
 
   useEffect(() => {
     return () => {
