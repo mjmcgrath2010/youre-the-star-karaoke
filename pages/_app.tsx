@@ -6,7 +6,6 @@ import { Provider } from "react-redux";
 
 import createEmotionCache from "../lib/emotion/cache";
 import lightTheme from "../styles/theme/light";
-import useIdentity from "../hooks/useIdentity";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -15,8 +14,6 @@ export default function App({
   pageProps,
   emotionCache = clientSideEmotionCache,
 }: AppProps & { emotionCache?: typeof clientSideEmotionCache }) {
-  const userId = useIdentity();
-  console.log(userId);
   return (
     <Provider store={store}>
       <CacheProvider value={emotionCache}>
