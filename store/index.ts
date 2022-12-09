@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import socketReducer from "../features/socket/socketSlice";
 import songsReducer from "../features/songs/songsSlice";
 import userReducer from "../features/user/userSlice";
 
@@ -6,7 +7,12 @@ export const store = configureStore({
   reducer: {
     user: userReducer,
     songs: songsReducer,
+    socket: socketReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

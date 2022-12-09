@@ -1,8 +1,16 @@
-import { useEffect, useState } from "react";
-import io, { Socket } from "socket.io-client";
+import {
+  selectSocket,
+  selectSocketLoaded,
+  setSocket,
+} from "./../features/socket/socketSlice";
+import { useAppDispatch, useAppSelector } from "./useRedux";
+import { useEffect } from "react";
+import io from "socket.io-client";
 
 const useSocket = () => {
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const dispatch = useAppDispatch();
+  const socket = useAppSelector(selectSocket);
+  const loaded = useAppSelector(selectSocketLoaded);
   useEffect(() => {
     const socketInitializer = async () => {
       await fetch("/api/socket");
@@ -14,11 +22,11 @@ const useSocket = () => {
       });
 
       socket.on("disconnect", () => {
-        setSocket(null);
+        dispatch(setSocket(null));
       });
-      setSocket(socket);
+      dispatch(setSocket(socket));
     };
-    if (!socket) {
+    if (!loaded) {
       socketInitializer();
     }
 
@@ -27,7 +35,7 @@ const useSocket = () => {
         socket.disconnect();
       }
     };
-  }, [socket]);
+  }, [socket, loaded, dispatch]);
 
   return socket;
 };
