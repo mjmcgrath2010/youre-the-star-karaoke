@@ -14,6 +14,7 @@ import MainLayout from "../layouts/MainLayout";
 import { Button } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
 import { selectSongs, selectSongsLoaded } from "../features/songs/songsSlice";
+import useRecentSongs from "../hooks/useRecentSongs";
 
 function QuickSearchToolbar() {
   return (
@@ -29,10 +30,10 @@ function QuickSearchToolbar() {
 
 export default function Home() {
   const [song, setSong] = useState<Record<string, string> | undefined>();
-  const dispatch = useAppDispatch();
+  const { recentSongs } = useRecentSongs();
   const songs = useAppSelector(selectSongs);
   const songsLoaded = useAppSelector(selectSongsLoaded);
-
+  console.table(recentSongs);
   const columns = [
     {
       field: "title",
