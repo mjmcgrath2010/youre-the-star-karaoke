@@ -1,9 +1,11 @@
 import { Container, Box } from "@mui/material";
 import React, { useEffect } from "react";
+import useSWR from "swr";
 import TopNav from "../components/TopNav";
+import { selectSongsLoaded, setSongs } from "../features/songs/songsSlice";
 import { setUserId } from "../features/user/userSlice";
 import useIdentity from "../hooks/useIdentity";
-import { useAppDispatch } from "../hooks/useRedux";
+import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
 
 export interface MainLayoutProps {
   children: React.ReactNode;
@@ -11,7 +13,18 @@ export interface MainLayoutProps {
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   const dispatch = useAppDispatch();
+  const songsLoaded = useAppSelector(selectSongsLoaded);
   const userId = useIdentity();
+
+  const { data } = useSWR("/api/songs", () => {
+    return fetch("/api/songs").then((res) => res.json());
+  });
+
+  useEffect(() => {
+    if (data && !songsLoaded) {
+      dispatch(setSongs(data));
+    }
+  }, [songsLoaded, data, dispatch]);
 
   useEffect(() => {
     if (userId) {

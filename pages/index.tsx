@@ -12,6 +12,8 @@ import Typography from "@mui/material/Typography";
 import SignupModal from "../components/SignupModal";
 import MainLayout from "../layouts/MainLayout";
 import { Button } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
+import { selectSongs, selectSongsLoaded } from "../features/songs/songsSlice";
 
 function QuickSearchToolbar() {
   return (
@@ -27,9 +29,9 @@ function QuickSearchToolbar() {
 
 export default function Home() {
   const [song, setSong] = useState<Record<string, string> | undefined>();
-  const { data } = useSWR("/api/songs", () => {
-    return fetch("/api/songs").then((res) => res.json());
-  });
+  const dispatch = useAppDispatch();
+  const songs = useAppSelector(selectSongs);
+  const songsLoaded = useAppSelector(selectSongsLoaded);
 
   const columns = [
     {
@@ -93,14 +95,14 @@ export default function Home() {
           }}
         >
           <DataGrid
-            loading={!data}
+            loading={!songsLoaded}
             getRowId={(row) => row._id}
             pagination
             onRowClick={({ row, id }) => {
               setSong({ ...row, id });
             }}
             columns={columns}
-            rows={data || []}
+            rows={songs || []}
             components={{ Toolbar: QuickSearchToolbar }}
           />
         </Box>
