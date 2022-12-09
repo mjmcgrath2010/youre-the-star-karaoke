@@ -48,7 +48,7 @@ export default function Home() {
       flex: 1,
     },
     {
-      field: "Add to Queue",
+      field: "addToQueue",
       headerName: "",
       sortable: false,
       renderCell: ({ row }: any) => {
@@ -89,23 +89,20 @@ export default function Home() {
             height: "80vh",
             width: "100%",
             flexDirection: "column",
+            display: "flex",
           }}
         >
-          <div style={{ height: "100%", display: "flex", width: "100%" }}>
-            <div style={{ flexGrow: 1 }}>
-              <DataGrid
-                loading={!data}
-                getRowId={(row) => row._id}
-                pagination
-                onRowClick={({ row, id }) => {
-                  setSong({ ...row, id });
-                }}
-                columns={columns}
-                rows={data || []}
-                components={{ Toolbar: QuickSearchToolbar }}
-              />
-            </div>
-          </div>
+          <DataGrid
+            loading={!data}
+            getRowId={(row) => row._id}
+            pagination
+            onRowClick={({ row, id }) => {
+              setSong({ ...row, id });
+            }}
+            columns={columns}
+            rows={data || []}
+            components={{ Toolbar: QuickSearchToolbar }}
+          />
         </Box>
       </Box>
     </MainLayout>
