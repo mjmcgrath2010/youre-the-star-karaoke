@@ -11,6 +11,7 @@ interface Song {
 const songsAdapter = createEntityAdapter<Song>({
   // Assume IDs are stored in a field other than `book.id`
   selectId: (song) => song._id,
+  sortComparer: (a, b) => a.title.localeCompare(b.title),
 });
 
 const songsSelectors = songsAdapter.getSelectors<RootState>(
@@ -34,6 +35,8 @@ export const songsSlice = createSlice({
 const { actions, reducer: songsReducer } = songsSlice;
 
 export const { setSongs } = actions;
+
+export const { selectById } = songsSelectors;
 
 export const selectSongsLoaded = (state: RootState) => state.songs.loaded;
 export const selectSongs = (state: RootState) =>

@@ -16,9 +16,17 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   const songsLoaded = useAppSelector(selectSongsLoaded);
   const userId = useIdentity();
 
-  const { data } = useSWR("/api/songs", () => {
-    return fetch("/api/songs").then((res) => res.json());
-  });
+  const { data } = useSWR(
+    "/api/songs",
+    () => {
+      return fetch("/api/songs").then((res) => res.json());
+    },
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      refreshWhenHidden: false,
+    }
+  );
 
   useEffect(() => {
     if (data && !songsLoaded) {

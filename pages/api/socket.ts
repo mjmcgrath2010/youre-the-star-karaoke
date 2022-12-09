@@ -23,6 +23,10 @@ const SocketHandler = (_: any, res: any) => {
       socket.on("song-complete", async (msg) => {
         await redis.hdel("signup", msg);
       });
+
+      socket.on("disconnect", () => {
+        console.log("user disconnected");
+      });
     });
   }
   res.end();
