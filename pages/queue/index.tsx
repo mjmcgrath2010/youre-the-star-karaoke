@@ -5,7 +5,9 @@ import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import useSongQueue from "../../hooks/useSongQueue";
 import dayjs from "dayjs";
-import { Button } from "@mui/material";
+import { IconButton } from "@mui/material";
+import { DeleteOutlineRounded } from "@mui/icons-material";
+
 import { makeStyles } from "@mui/styles";
 import MainLayout from "../../layouts/MainLayout";
 import useSocket from "../../hooks/useSocket";
@@ -80,9 +82,9 @@ const CompleteButton = ({ song }: any) => {
   };
 
   return (
-    <Button color="primary" variant="outlined" onClick={handleComplete}>
-      Done
-    </Button>
+    <IconButton color="primary" onClick={handleComplete}>
+      <DeleteOutlineRounded />
+    </IconButton>
   );
 };
 

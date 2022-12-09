@@ -10,7 +10,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import SignupModal from "../components/SignupModal";
 import MainLayout from "../layouts/MainLayout";
-import { Button } from "@mui/material";
+import { IconButton } from "@mui/material";
+import { AddCircleOutlineRounded } from "@mui/icons-material";
 import { makeStyles } from "@mui/styles";
 import { useAppSelector } from "../hooks/useRedux";
 import { selectSongs, selectSongsLoaded } from "../features/songs/songsSlice";
@@ -54,6 +55,7 @@ export default function Home() {
       field: "title",
       headerName: "Song Name",
       flex: 1,
+      minWidth: 150,
     },
     {
       field: "artist",
@@ -63,7 +65,9 @@ export default function Home() {
     {
       field: "diskNumber",
       headerName: "Disk Number",
-      flex: 1,
+      flex: 0.5,
+      minWidth: 40,
+      hide: global.innerWidth < 600,
     },
     {
       field: "addToQueue",
@@ -74,13 +78,13 @@ export default function Home() {
           setSong(row);
         };
         return (
-          <Button color="primary" variant="outlined" onClick={handleClick}>
-            Add to Queue
-          </Button>
+          <IconButton onClick={handleClick}>
+            <AddCircleOutlineRounded />
+          </IconButton>
         );
       },
       flex: 0.5,
-      minWidth: 150,
+      maxWidth: 60,
     },
   ];
 
