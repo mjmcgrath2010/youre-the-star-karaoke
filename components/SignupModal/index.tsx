@@ -12,7 +12,6 @@ import useSocket from "../../hooks/useSocket";
 import { useAppSelector } from "../../hooks/useRedux";
 import { selectUserId } from "../../features/user/userSlice";
 
-let socket: Socket | null;
 export interface SignupModalProps {
   title?: string;
   artist?: string;
