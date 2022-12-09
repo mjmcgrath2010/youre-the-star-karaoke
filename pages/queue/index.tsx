@@ -8,6 +8,8 @@ import dayjs from "dayjs";
 import { Button } from "@mui/material";
 import MainLayout from "../../layouts/MainLayout";
 import useSocket from "../../hooks/useSocket";
+import { useAppSelector } from "../../hooks/useRedux";
+import { selectUserId } from "../../features/user/userSlice";
 
 export interface SignupPageProps {}
 
@@ -54,8 +56,9 @@ function GridNoResults() {
   );
 }
 
-const CompleteButton = ({ id }: any) => {
+const CompleteButton = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
+  const userId = useAppSelector(selectUserId);
 
   const socketInitializer = async () => {
     await fetch("/api/socket");
@@ -72,7 +75,7 @@ const CompleteButton = ({ id }: any) => {
   }, [socket]);
 
   const handleComplete = () => {
-    socket?.emit("song-complete", id);
+    socket?.emit("song-complete", userId);
   };
 
   return (
@@ -114,8 +117,8 @@ const columns = [
     headerName: "",
     sortable: false,
     flex: 1,
-    renderCell: (params: any) => {
-      return <CompleteButton id={params.id} />;
+    renderCell: () => {
+      return <CompleteButton />;
     },
   },
 ];
@@ -127,7 +130,7 @@ const SignupPage = () => {
   const { data, refresh } = useSongQueue();
 
   const setupListers = useCallback(
-    (socket: Socket) => {
+    (socket: any) => {
       socket.on("new-signup", (msg: any) => {
         updateQueue(
           [...queue, msg].map(

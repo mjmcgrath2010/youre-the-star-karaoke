@@ -17,6 +17,7 @@ const useSocket = () => {
       const socket = io(window.location.origin, {
         path: "/socket.io/",
       });
+
       socket.on("connect", () => {
         console.log("connected");
       });
@@ -24,6 +25,7 @@ const useSocket = () => {
       socket.on("disconnect", () => {
         dispatch(setSocket(null));
       });
+
       dispatch(setSocket(socket));
     };
     if (!loaded) {

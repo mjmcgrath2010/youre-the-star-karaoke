@@ -9,6 +9,8 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import dayjs from "dayjs";
 import useSocket from "../../hooks/useSocket";
+import { useAppSelector } from "../../hooks/useRedux";
+import { selectUserId } from "../../features/user/userSlice";
 
 let socket: Socket | null;
 export interface SignupModalProps {
@@ -29,6 +31,7 @@ const SignupModal = ({
   const [open, setOpen] = useState(true);
   const [input, setInput] = useState("");
   const socket = useSocket();
+  const userId = useAppSelector(selectUserId);
 
   const onChangeHandler = (e: any) => {
     setInput(e.target.value);
@@ -43,6 +46,7 @@ const SignupModal = ({
         diskNumber,
         id,
         createdAt: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+        userId,
       });
     }
 

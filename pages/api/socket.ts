@@ -16,7 +16,11 @@ const SocketHandler = (_: any, res: any) => {
 
     io.on("connection", (socket) => {
       socket.on("new-signup", async (msg) => {
-        await redis.hset("signup", msg.id, JSON.stringify(msg));
+        await redis.hset(
+          "signup",
+          `${msg.userId}-${msg.id}`,
+          JSON.stringify(msg)
+        );
         socket.broadcast.emit("signup", msg);
       });
 
