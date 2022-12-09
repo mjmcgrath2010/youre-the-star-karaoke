@@ -4,34 +4,35 @@ import {
   setSocket,
 } from "./../features/socket/socketSlice";
 import { useAppDispatch, useAppSelector } from "./useRedux";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import io from "socket.io-client";
+import useSWR from "swr";
 
 const useSocket = () => {
   const dispatch = useAppDispatch();
   const socket = useAppSelector(selectSocket);
   const loaded = useAppSelector(selectSocketLoaded);
+
+  const socketInitializer = useCallback(async () => {
+    await fetch("/api/socket");
+    const socket = io(window.location.origin, {
+      path: "/socket.io/",
+    });
+
+    socket.on("connect", () => {
+      console.log("connected");
+    });
+
+    socket.on("disconnect", () => {
+      dispatch(setSocket(null));
+    });
+
+    dispatch(setSocket(socket));
+  }, [dispatch]);
+
+  useSWR(loaded ? null : "GK_WS", socketInitializer);
+
   useEffect(() => {
-    const socketInitializer = async () => {
-      await fetch("/api/socket");
-      const socket = io(window.location.origin, {
-        path: "/socket.io/",
-      });
-
-      socket.on("connect", () => {
-        console.log("connected");
-      });
-
-      socket.on("disconnect", () => {
-        dispatch(setSocket(null));
-      });
-
-      dispatch(setSocket(socket));
-    };
-    if (!loaded) {
-      socketInitializer();
-    }
-
     return () => {
       if (socket) {
         socket.disconnect();
