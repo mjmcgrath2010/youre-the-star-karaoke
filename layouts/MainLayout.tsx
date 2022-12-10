@@ -50,13 +50,17 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   }, [userId, dispatch]);
   const { root } = useStyles();
   return (
-    <Box>
+    <Box
+      sx={{
+        backgroundColor: "#fafafa",
+      }}
+    >
       <TopNav />
       <Container
         className={root}
         maxWidth="xl"
         sx={{
-          paddingTop: "16px",
+          paddingTop: "32px",
         }}
       >
         {children}

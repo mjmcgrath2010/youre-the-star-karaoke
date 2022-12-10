@@ -4,11 +4,14 @@ export const themeOptions: ThemeOptions = {
   palette: {
     mode: "light",
     primary: {
-      main: "#031054",
+      main: "#6a1b9a",
+      light: "#ab47bc",
+      dark: "#311b92",
     },
     secondary: {
-      main: "#c300bf",
-      dark: "#92238f",
+      main: "#00695c",
+      dark: "#00695c",
+      light: "#26a69a",
     },
     error: {
       main: "#c62828",
